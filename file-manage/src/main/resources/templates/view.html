@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>查看</title>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+    <script type="text/javascript" charset="utf-8" src="/third-party/jquery-1.10.2.js"></script>
+</head>
+<body>
+<script id="content" th:text="${content}" type="text/plain"></script>
+<script>
+    function escape2Html(str) {
+        var arrEntities={'lt':'<','gt':'>','nbsp':' ','amp':'&','quot':'"'};
+        return str.replace(/&(lt|gt|nbsp|amp|quot);/ig,function(all,t){return arrEntities[t];});
+    }
+    var content=$("#content").html();
+    console.log(content);
+    $("body").append(escape2Html(content))
+</script>
+</body>
+</html>

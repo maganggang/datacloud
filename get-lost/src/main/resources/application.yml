@@ -1,0 +1,18 @@
+spring:
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/get-lost?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+    username: root
+    password: password
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    timeout: 3000
+  session:
+    store-type: redis
+mybatis:
+  mapper-locations: classpath:mapper/*Mapper.xml
+  basepackage: com.fei2e.getlost.mapper
+server:
+  port: 8581

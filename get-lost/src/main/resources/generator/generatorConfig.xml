@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <!--可引入properties文件配置，此处未启用-->
+    <!--<properties resource="application.properties"/>-->
+
+    <context id="Mysql" targetRuntime="MyBatis3Simple" defaultModelType="flat">
+        <!--处理sql中的`符号-->
+    <!--    <property name="javaFileEncoding" value="UTF-8"/>
+        <property name="useMapperCommentGenerator" value="false"/>-->
+        <!--使用tk的mapper-->
+        <plugin type="tk.mybatis.mapper.generator.MapperPlugin">
+            <property name="mappers" value="tk.mybatis.mapper.common.Mapper"/>
+            <property name="caseSensitive" value="true"/>
+           <!-- <property name="forceAnnotation" value="true"/>
+            <property name="beginningDelimiter" value="`"/>
+            <property name="endingDelimiter" value="`"/>-->
+        </plugin>
+
+        <!--数据源配置-->
+       <!-- <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
+                        connectionURL="jdbc:mysql://127.0.0.1:3306/get-lost"
+                        userId="root"
+                        password="password">
+            <property name="serverTimezone" value="UTC"/>
+            <property name="nullCatalogMeansCurrent" value="true"/>
+        </jdbcConnection>-->
+        <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
+                        connectionURL="jdbc:mysql://192.168.0.123:3306/db_tps"
+                        userId="maganggang"
+                        password="123456">
+            <property name="serverTimezone" value="UTC"/>
+            <property name="nullCatalogMeansCurrent" value="true"/>
+        </jdbcConnection>
+        <!--model包路径-->
+        <javaModelGenerator targetPackage="com.fei2e.getlost.entity" targetProject="src/main/java"/>
+        <!--mapper.xml包路径-->
+        <sqlMapGenerator targetPackage="mapper" targetProject="src/main/resources"/>
+        <!--mapper包路径-->
+        <javaClientGenerator targetPackage="com.fei2e.getlost.mapper" targetProject="src/main/java"
+                             type="XMLMAPPER"/>
+        <!--表配置，tableName支持%，表示全部生成-->
+       <!-- <table tableName="account" domainObjectName="Account">
+        </table>-->
+        <!--<table tableName="lost_tag_ref" domainObjectName="LostTagRef">
+        </table>-->
+        <table tableName="pay_payment" domainObjectName="Payment">
+        </table>
+        <!--<table tableName="get_tag_ref" domainObjectName="GetTagRef">
+        </table>
+        <table tableName="dictionary" domainObjectName="Dictionary">
+        </table>
+        <table tableName="goods" domainObjectName="Goods">
+        </table>
+        <table tableName="goods_extra" domainObjectName="GoodsExtra">
+        </table>
+        <table tableName="get_file" domainObjectName="GetFile">
+        </table>
+        <table tableName="lost_file" domainObjectName="LostFile">
+        </table>
+        <table tableName="position" domainObjectName="Position">
+        </table>
+        <table tableName="up_get" domainObjectName="UpGet">
+        </table>
+        <table tableName="up_lost" domainObjectName="UpLost">
+        </table>-->
+    </context>
+</generatorConfiguration>
