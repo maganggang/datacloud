@@ -11,6 +11,8 @@ public class Position {
      *
      * @mbggenerated Mon Sep 28 17:24:23 CST 2020
      */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer positionId;
 
     /**

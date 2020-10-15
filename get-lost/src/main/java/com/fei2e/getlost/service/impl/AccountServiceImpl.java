@@ -50,8 +50,13 @@ public class AccountServiceImpl extends BaseServiceImpl<Account> implements Acco
             }
         }
         account.setCreateTime(new Date());
-        accountMapper.insert(account);
-        result.setData(account);
+        int i=accountMapper.insert(account);
+        if(i>0){
+            result.setData(account);
+        }else {
+            result.setStatus(500);
+            result.setMessage("注册失败");
+        }
         return result;
     }
 }

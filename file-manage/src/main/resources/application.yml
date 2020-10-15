@@ -1,4 +1,6 @@
 spring:
+  application:
+    name: file-manage
   datasource:
     url: jdbc:mysql://127.0.0.1:3306/filemanage?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
     username: root
@@ -94,4 +96,10 @@ ueditor:
     fileManagerUrlPrefix:  #文件访问路径前缀
     fileManagerListSize: 20 #每次列出文件数量
     fileManagerAllowFiles: .png, .jpg, .jpeg, .gif, .bmp,.flv, .swf, .mkv, .avi, .rm, .rmvb, .mpeg, .mpg,.ogg, .ogv, .mov, .wmv, .mp4, .webm, .mp3, .wav, .mid,.rar, .zip, .tar, .gz, .7z, .bz2, .cab, .iso,.doc, .docx, .xls, .xlsx, .ppt, .pptx, .pdf, .txt, .md, .xml
-
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:1011/eureka/
+  instance:
+    lease-renewal-interval-in-seconds: 2
+    lease-expiration-duration-in-seconds: 4

@@ -21,20 +21,20 @@
         </plugin>
 
         <!--数据源配置-->
-       <!-- <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
+        <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
                         connectionURL="jdbc:mysql://127.0.0.1:3306/get-lost"
                         userId="root"
                         password="password">
             <property name="serverTimezone" value="UTC"/>
             <property name="nullCatalogMeansCurrent" value="true"/>
-        </jdbcConnection>-->
-        <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
+        </jdbcConnection>
+        <!--<jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
                         connectionURL="jdbc:mysql://192.168.0.123:3306/db_tps"
                         userId="maganggang"
                         password="123456">
             <property name="serverTimezone" value="UTC"/>
             <property name="nullCatalogMeansCurrent" value="true"/>
-        </jdbcConnection>
+        </jdbcConnection>-->
         <!--model包路径-->
         <javaModelGenerator targetPackage="com.fei2e.getlost.entity" targetProject="src/main/java"/>
         <!--mapper.xml包路径-->
@@ -45,9 +45,8 @@
         <!--表配置，tableName支持%，表示全部生成-->
        <!-- <table tableName="account" domainObjectName="Account">
         </table>-->
-        <!--<table tableName="lost_tag_ref" domainObjectName="LostTagRef">
-        </table>-->
-        <table tableName="pay_payment" domainObjectName="Payment">
+
+        <table tableName="goods_tag" domainObjectName="GoodsTag">
         </table>
         <!--<table tableName="get_tag_ref" domainObjectName="GetTagRef">
         </table>

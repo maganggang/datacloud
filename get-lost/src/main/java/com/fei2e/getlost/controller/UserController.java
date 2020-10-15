@@ -5,6 +5,7 @@ import com.fei2e.getlost.entity.BaseResult;
 import com.fei2e.getlost.entity.User;
 import com.fei2e.getlost.service.AccountService;
 import com.fei2e.getlost.service.UserService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,6 +22,7 @@ import javax.servlet.http.HttpSession;
  * @Date 2020/9/29 9:07
  * @Version 1.0
  **/
+@Api(description = "用户管理")
 @RestController
 @RequestMapping("user")
 public class UserController {

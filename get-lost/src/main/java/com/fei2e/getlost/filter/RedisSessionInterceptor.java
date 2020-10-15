@@ -5,6 +5,7 @@ import com.fei2e.getlost.entity.BaseResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @ClassName RedisSessionInterceptor
@@ -28,26 +30,25 @@ public class RedisSessionInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception
     {
-        //无论访问的地址是不是正确的，都进行登录验证，登录成功后的访问再进行分发，404的访问自然会进入到错误控制器中
-        HttpSession session = request.getSession();
-        System.out.println(session.getAttribute("accountId"));
-        if (session.getAttribute("accountId") != null)
-        {
-            try
-            {
-                //验证当前请求的session是否是已登录的session
-                String loginSessionId = redisTemplate.opsForValue().get("loginAccount:" + session.getAttribute("accountId").toString() );
-                if (loginSessionId != null && loginSessionId.equals(session.getId()))
-                {
+        String token = request.getHeader("Authorization");
+        if(token!=null&&!StringUtils.isEmpty(token)){
+            String json=redisTemplate.opsForValue().get(token);//根据key获取缓存中的val
+            if(json!=null&& !StringUtils.isEmpty(json)){
+                JSONObject jsonObject=JSONObject.parseObject(json);
+                HttpSession session = request.getSession();
+                for(String str:jsonObject.keySet()){
+                    //无论访问的地址是不是正确的，都进行登录验证，
+                    // 登录成功后的访问再进行分发，404的访问自然会进入到错误控制器中
+                    session.setAttribute(str,jsonObject.get(str));
+                }
+                if (session.getAttribute("accountId") != null) {
+                    //向redis里存入数据和设置缓存时间
+                    redisTemplate.opsForValue().set(token, jsonObject.toJSONString(),60*30, TimeUnit.SECONDS);
                     return true;
                 }
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
+
             }
         }
-
         response401(response);
         return false;
     }
@@ -56,13 +57,9 @@ public class RedisSessionInterceptor implements HandlerInterceptor {
     {
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json; charset=utf-8");
-
-        try
-        {
+        try{
             response.getWriter().print(JSONObject.toJSONString(new BaseResult<String>(500, "", "用户未登录！")));
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

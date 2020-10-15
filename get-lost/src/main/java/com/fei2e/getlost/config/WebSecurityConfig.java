@@ -28,7 +28,16 @@ public class WebSecurityConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry)
     {
         //所有已api开头的访问都要进入RedisSessionInterceptor拦截器进行登录验证，并排除login接口(全路径)。必须写成链式，分别设置的话会创建多个拦截器。
-        registry.addInterceptor(redisSessionInterceptor).addPathPatterns("/**").excludePathPatterns("/account/**");
+        registry.addInterceptor(redisSessionInterceptor).addPathPatterns("/**")
+                .excludePathPatterns("/account/**")
+                .excludePathPatterns("/swagger-ui.html")
+                .excludePathPatterns("/configuration/ui")
+                .excludePathPatterns("/swagger-resources")
+                .excludePathPatterns("/configuration/security")
+                .excludePathPatterns("/v2/api-docs")
+                .excludePathPatterns("/error")
+                .excludePathPatterns("/webjars/**")
+                .excludePathPatterns("/**/favicon.ico");
     }
 
 }
