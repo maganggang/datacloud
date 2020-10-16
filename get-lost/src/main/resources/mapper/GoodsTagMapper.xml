@@ -10,4 +10,16 @@
     <result column="code" property="code" jdbcType="VARCHAR" />
     <result column="tag_name" property="tagName" jdbcType="VARCHAR" />
   </resultMap>
+  <sql id="baseSql">
+    tag_id,parent_id,code,tag_name
+  </sql>
+  <select id="selectByIds" resultMap="BaseResultMap" >
+    select
+    <include refid="baseSql"/>
+    from goods_tag
+    where id in
+    <foreach collection="list" close=")" item="item" open="(" separator=",">
+      #{item}
+    </foreach>
+  </select>
 </mapper>

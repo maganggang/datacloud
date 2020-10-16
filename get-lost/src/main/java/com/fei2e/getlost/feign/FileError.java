@@ -1,5 +1,6 @@
 package com.fei2e.getlost.feign;
 
+import com.fei2e.demo.entity.FileBase;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,5 +27,10 @@ public class FileError implements FileFeignServer{
     @Override
     public boolean removeFiles(List<Integer> fileIds) {
         return false;
+    }
+
+    @Override
+    public List<FileBase> selectByIds(List<Integer> list) {
+        return null;
     }
 }
