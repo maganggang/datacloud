@@ -19,7 +19,7 @@ import java.util.List;
  * @Date 2020/9/15 9:56
  * @Version 1.0
  **/
-public interface FileBaseRepository extends JpaRepository<FileBase, Integer>, JpaSpecificationExecutor<FileBase> {
+public interface FileBaseRepository extends JpaRepository<FileBase, Integer>, JpaSpecificationExecutor<FileBase>{
     /**
      * 根据code查询id
      * @param list
@@ -66,4 +66,7 @@ public interface FileBaseRepository extends JpaRepository<FileBase, Integer>, Jp
     @Modifying
     @Query(value = "update Base u set u.use_Count=use_Count+1  where u.id  in (:ids)", nativeQuery = true)
     int updateCount(@Param("ids")List<Integer> ids);
+    @Modifying
+    @Query(value = "select id from base where id in (:list)", nativeQuery = true)
+    List<FileBase> findByIds(List<Integer> list);
 }

@@ -9,6 +9,7 @@ import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -28,12 +29,6 @@ import java.util.concurrent.TimeUnit;
 @RestController
 @RequestMapping("account")
 public class AccountController {
-    @Autowired
-    private FileFeignServer fileFeignServer;
-    @RequestMapping("/")
-    public String home(){
-        return  fileFeignServer.hello();
-    }
     @Autowired
     private AccountService accountService;
     @Autowired
@@ -72,14 +67,11 @@ public class AccountController {
     public void logout(HttpServletRequest request){
         //登录成功后清除所有该账号的session -1
         HttpSession session = request.getSession();
-        if(session.getAttribute("accountId")!=null){
-            String accountId=session.getAttribute("accountId").toString();
-            session.removeAttribute("loginUserId");
-            session.removeAttribute("accountId");
-            redisTemplate.opsForHash().delete("loginAccount:"+ accountId);
-            session.invalidate();
+        String token = request.getHeader("Authorization");
+        if(token!=null&& !StringUtils.isEmpty(token)){
+            redisTemplate.delete(token);//根据key删除缓存
         }
-
+        session.invalidate();
     }
 
 

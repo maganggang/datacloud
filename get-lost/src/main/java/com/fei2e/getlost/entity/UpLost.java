@@ -103,6 +103,7 @@ public class UpLost {
      * @mbggenerated Mon Sep 28 17:24:23 CST 2020
      */
     private String telephone;
+    private String address;
     @Transient
     private Goods goods;
     @Transient
@@ -111,6 +112,14 @@ public class UpLost {
     private List<LostFile> lostFiles;
     @Transient
     private List<GoodsTag> tagList;
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
     public List<GoodsTag> getTagList() {
         return tagList;

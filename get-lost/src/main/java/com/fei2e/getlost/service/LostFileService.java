@@ -12,5 +12,11 @@ import java.util.List;
  * @Version 1.0
  **/
 public interface LostFileService {
-     void insertList(Integer lostId, List<LostFile> lostFiles);
+     List<LostFile> selectByLostId(Integer id);
+
+    void insertList(Integer lostId, List<LostFile> lostFiles);
+
+    int deleteFileByLostId(Integer id);
+
+    List<Integer> selectFileByLostId(Integer id);
 }

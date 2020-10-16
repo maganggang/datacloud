@@ -2,9 +2,11 @@ package com.fei2e.getlost.base;
 
 import com.fei2e.getlost.entity.Page;
 import com.github.pagehelper.PageHelper;
+import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 import tk.mybatis.mapper.util.StringUtil;
 
+import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
 /**
@@ -14,6 +16,7 @@ import java.util.List;
  * @Date 2020/9/27 10:43
  * @Version 1.0
  **/
+@Service
 public abstract class BaseServiceImpl<T> implements BaseService<T> {
     protected abstract BaseMapper<T> getMapper();
     /**
@@ -290,7 +293,8 @@ public abstract class BaseServiceImpl<T> implements BaseService<T> {
      * @return com.fei2e.getlost.entity.Page<T>
      **/
     public Page<T> selectByPage(Page<T> query) {
-        Example example = new Example(query.getT().getClass());
+        Class<T> clazz = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+        Example example = new Example(clazz);
         if (query.getT()!=null) {
             Example.Criteria criteria = example.createCriteria();
             if(query.getOrderBy()!=null&& StringUtil.isNotEmpty(query.getOrderBy())){

@@ -39,10 +39,4 @@ public class GoodsController {
     }
     return result;
     }
-    @GetMapping("test")
-    public String test(){
-        HttpSession session=request.getSession();
-        System.out.println(session.getAttribute("accountId"));
-       return "hello";
-    }
 }

@@ -30,4 +30,11 @@ public class UpLostTagRefServiceImpl implements UpLostTagRefService {
             upLostTagRefMapper.insertSelective(upGetTagRef);
         }
     }
+
+    @Override
+    public int deleteByLostId(Integer lostId) {
+        UpLostTagRef upLostTagRef=new UpLostTagRef();
+        upLostTagRef.setLostId(lostId);
+        return  upLostTagRefMapper.delete(upLostTagRef);
+    }
 }

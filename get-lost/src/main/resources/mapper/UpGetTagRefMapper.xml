@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fei2e.getlost.mapper.UpGetTagRefMapper" >
+  <resultMap id="BaseResultMap" type="com.fei2e.getlost.entity.UpGetTagRef" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <result column="get_id" property="getId" jdbcType="INTEGER" />
+    <result column="goods_tag_id" property="goodsTagId" jdbcType="INTEGER" />
+  </resultMap>
+</mapper>

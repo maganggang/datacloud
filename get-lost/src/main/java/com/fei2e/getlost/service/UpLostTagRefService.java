@@ -13,4 +13,8 @@ import java.util.List;
  **/
 public interface UpLostTagRefService {
     public void insertList(Integer getId, List<GoodsTag> tagList);
+
+    int deleteByLostId(Integer lostId);
+
+    List<GoodsTag> selectByLost(Integer id);
 }

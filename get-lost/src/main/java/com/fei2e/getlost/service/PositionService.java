@@ -13,4 +13,6 @@ import org.springframework.stereotype.Service;
  * @Version 1.0
  **/
 public interface PositionService extends BaseService<Position> {
+
+    int insertByCheck(Position position);
 }

@@ -2,7 +2,9 @@ package com.fei2e.getlost.service.impl;
 
 import com.fei2e.getlost.base.BaseMapper;
 import com.fei2e.getlost.base.BaseServiceImpl;
+import com.fei2e.getlost.entity.BaseResult;
 import com.fei2e.getlost.entity.Goods;
+import com.fei2e.getlost.entity.Page;
 import com.fei2e.getlost.entity.UpLost;
 import com.fei2e.getlost.mapper.GoodsMapper;
 import com.fei2e.getlost.mapper.UpLostMapper;
@@ -25,5 +27,13 @@ public class UpLostServiceImpl extends BaseServiceImpl<UpLost>  implements UpLos
     @Override
     protected BaseMapper<UpLost> getMapper() {
         return upLostMapper;
+    }
+
+    @Override
+    public BaseResult<Page<UpLost>> selectPage(Page<UpLost> page) {
+        BaseResult<Page<UpLost>> result=new BaseResult<>();
+        Page<UpLost> data=super.selectByPage(page);
+        result.setData(data);
+        return result;
     }
 }

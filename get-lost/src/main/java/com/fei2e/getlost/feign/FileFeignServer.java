@@ -1,7 +1,11 @@
 package com.fei2e.getlost.feign;
 
+import com.fei2e.demo.entity.FileBase;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @ClassName FileBaseFeign
@@ -10,8 +14,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @Date 2020/10/15 16:18
  * @Version 1.0
  **/
-@FeignClient(name = "file-manage")
+@Service
+@FeignClient(name = "file-manage",fallback = FileError.class)
 public interface FileFeignServer {
     @RequestMapping("/hello")
-    public String hello();
+     String hello();
+    @PostMapping("api/update")
+    @ResponseBody
+    int updateFileCount(@RequestBody List<Integer> ids);
+    @DeleteMapping("api/delete")
+    @ResponseBody
+    boolean removeFiles(@RequestBody List<Integer> fileIds);
+    @GetMapping("api/select")
+    @ResponseBody
+    List<FileBase> selectByIds(@RequestBody List<Integer> list);
 }

@@ -274,6 +274,13 @@ public class FileBaseBiz  {
     private void deleteData(Integer id){
        fileBaseRepository.deleteById(id);
     }
+    /**
+     * @Author mgg
+     * @Description 删除本地附件
+     * @Date 15:50 2020/10/16
+     * @Param [filePath]
+     * @return boolean
+     **/
     private boolean deleteFile(String filePath){
         File file = new File(filePath);
         if (file.exists()){
@@ -324,7 +331,13 @@ private String getRealFileName(String fileName,Calendar calendar){
         }
         return saveFileData(fileName,origin,baseUrl,calendar,file.getSize(),type,filePath+fileName2,fileName2,fileBase);
     }
-
+/**
+ * @Author mgg
+ * @Description  删除附件和数据
+ * @Date 15:50 2020/10/16
+ * @Param
+ * @return
+ **/
     public BaseResult<Boolean> deleteFile(Integer id) {
         BaseResult<Boolean> result=new BaseResult<>();
         FileBase fileBase=fileBaseRepository.findById(id).get();
@@ -338,6 +351,13 @@ private String getRealFileName(String fileName,Calendar calendar){
         }
         return result;
     }
+    /**
+     * @Author mgg
+     * @Description  保存附件数据
+     * @Date 9:17 2020/10/16
+     * @Param 
+     * @return 
+     **/
     public FileBase saveFileData(String fileName,String origin,String baseUrl,Calendar calendar,Long size,String type,String path,String code, FileBase fileBase ){
         if(fileBase==null||fileBase.getId()==null){
             fileBase=new FileBase();
@@ -357,5 +377,20 @@ private String getRealFileName(String fileName,Calendar calendar){
         fileBase.setCode(code);
         fileBaseRepository.save(fileBase);
         return fileBase;
+    }
+    /**
+     * @Author mgg
+     * @Description  使用状态更改
+     * @Date 10:47 2020/10/16
+     * @Param 
+     * @return 
+     **/
+    public Integer updateFileCount(List<Integer> ids){
+        //使用状态更改
+        return fileBaseRepository.updateCount(ids);
+    }
+
+    public List<FileBase> selectByIds(List<Integer> list) {
+        return fileBaseRepository.findByIds(list);
     }
 }

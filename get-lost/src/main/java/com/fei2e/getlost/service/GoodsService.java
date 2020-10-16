@@ -13,6 +13,8 @@ import com.fei2e.getlost.service.impl.UpLostTagRefServiceImpl;
  **/
 public interface GoodsService extends BaseService<Goods> {
 
+    int deleteByLostId(Integer lostId);
+
     /**
      * @ClassName UpLostTagRefService
      * @DescripTion TODO

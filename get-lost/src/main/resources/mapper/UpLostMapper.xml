@@ -19,5 +19,6 @@
     <result column="operator_id" jdbcType="INTEGER" property="operatorId" />
     <result column="operate_time" jdbcType="TIMESTAMP" property="operateTime" />
     <result column="telephone" jdbcType="VARCHAR" property="telephone" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
   </resultMap>
 </mapper>

@@ -10,4 +10,7 @@
     <id column="goods_file_id" jdbcType="INTEGER" property="goodsFileId" />
     <result column="lost_id" jdbcType="INTEGER" property="lostId" />
   </resultMap>
+  <select id="selectFileByLostId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    select goods_file_id from lost_file where lost_id=#{lostId}
+  </select>
 </mapper>
