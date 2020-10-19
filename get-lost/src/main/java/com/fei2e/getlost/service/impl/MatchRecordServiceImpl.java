@@ -23,4 +23,11 @@ public class MatchRecordServiceImpl implements MatchRecordService {
         matchRecord.setLostId(lostId);
         return matchRecordMapper.delete(matchRecord);
     }
+
+    @Override
+    public int deleteByGetId(Integer id) {
+        MatchRecord matchRecord=new MatchRecord();
+        matchRecord.setGetId(id);
+        return matchRecordMapper.delete(matchRecord);
+    }
 }

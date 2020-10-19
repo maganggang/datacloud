@@ -67,6 +67,6 @@ public interface FileBaseRepository extends JpaRepository<FileBase, Integer>, Jp
     @Query(value = "update Base u set u.use_Count=use_Count+1  where u.id  in (:ids)", nativeQuery = true)
     int updateCount(@Param("ids")List<Integer> ids);
     @Modifying
-    @Query(value = "select id from base where id in (:list)", nativeQuery = true)
-    List<FileBase> findByIds(List<Integer> list);
+    @Query(value = "select * from Base u where id in (:list)", nativeQuery = true)
+    List<FileBase> findByIds(@Param("list")List<Integer> list);
 }

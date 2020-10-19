@@ -25,7 +25,7 @@ public interface FileFeignServer {
     @DeleteMapping("api/delete")
     @ResponseBody
     boolean removeFiles(@RequestBody List<Integer> fileIds);
-    @GetMapping("api/select")
+    @PostMapping("api/select")
     @ResponseBody
     List<FileBase> selectByIds(@RequestBody List<Integer> list);
 }

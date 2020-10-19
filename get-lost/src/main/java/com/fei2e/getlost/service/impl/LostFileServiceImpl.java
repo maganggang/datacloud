@@ -36,7 +36,14 @@ public class LostFileServiceImpl implements LostFileService {
             list.add(file.getGoodsFileId());
         }
         List<FileBase> fileBases=fileFeignServer.selectByIds(list);
-        return null;
+        for ( FileBase file:fileBases ) {
+            for (LostFile lost: lostFiles ) {
+                if(file.getId().equals(lost.getGoodsFileId())){
+                    lost.setFileBase(file);
+                }
+            }
+        }
+        return lostFiles;
     }
 
     @Transactional

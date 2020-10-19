@@ -14,4 +14,6 @@ import java.util.List;
  **/
 public interface MatchRecordService {
     int deleteByLostId(Integer lostId);
+
+    int deleteByGetId(Integer id);
 }

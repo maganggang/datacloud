@@ -161,6 +161,7 @@ public class UpLostController {
         upLost.setPosition(position);
         List<GoodsTag> tagRefs=upLostTagRefService.selectByLost(id);
         upLost.setTagList(tagRefs);
+        result.setData(upLost);
         return result;
     }
 

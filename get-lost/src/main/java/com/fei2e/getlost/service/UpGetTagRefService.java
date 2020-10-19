@@ -14,4 +14,8 @@ import java.util.List;
  **/
 public interface UpGetTagRefService {
     void insertList(Integer goodsId, List<GoodsTag> tagList);
+
+    int deleteByGetId(Integer id);
+
+    List<GoodsTag> selectByGetId(Integer id);
 }

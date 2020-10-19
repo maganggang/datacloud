@@ -17,7 +17,7 @@
     select
     <include refid="baseSql"/>
     from goods_tag
-    where id in
+    where tag_id in
     <foreach collection="list" close=")" item="item" open="(" separator=",">
       #{item}
     </foreach>

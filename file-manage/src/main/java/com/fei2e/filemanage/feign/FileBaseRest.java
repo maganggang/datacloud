@@ -44,7 +44,7 @@ public class FileBaseRest {
         }
         return true;
     }
-    @GetMapping("api/select")
+    @PostMapping("api/select")
     @ResponseBody
     List<FileBase> selectByIds(@RequestBody List<Integer> list){
         return  fileBaseBiz.selectByIds(list);
