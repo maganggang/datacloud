@@ -43,14 +43,16 @@ public class UpLostController {
     @Autowired
     private MatchRecordService matchRecordService;
     @ApiOperation(value = "新增", notes="上报丢失物品信息")
-    @ApiImplicitParam(name = "upLost", value = "丢失信息", paramType = "body", required = true, dataType = "UpLost")
     @PostMapping("/add")
-    public BaseResult<UpLost> add(@RequestBody UpLost upLost){
+    public BaseResult<UpLost> add(@RequestBody @ApiParam("丢失信息")UpLost upLost){
         BaseResult<UpLost> baseResult=new BaseResult<>();
         if(request.getSession().getAttribute("userId")!=null){
             Integer userId=Integer.parseInt(request.getSession().getAttribute("userId").toString());
             Integer accountId=Integer.parseInt(request.getSession().getAttribute("accountId").toString());
             upLost.setUserId(userId);
+            if(upLost.getLostTime()==null){
+                upLost.setLostTime(new Date());
+            }
             upLost.setCreateTime(new Date());
             upLost.setCreatorId(accountId);
             //插入物品
@@ -89,9 +91,8 @@ public class UpLostController {
         return baseResult;
     }
     @ApiOperation(value = "修改", notes="修改上报丢失物品信息")
-    @ApiImplicitParam(name = "upLost", value = "丢失信息", paramType = "body", required = true, dataType = "UpLost")
     @PutMapping("/update/{id}")
-    public BaseResult<UpLost> add(@PathVariable Integer id,@RequestBody UpLost upLost){
+    public BaseResult<UpLost> add(@PathVariable Integer id,@ApiParam("丢失信息") @RequestBody UpLost upLost){
         BaseResult<UpLost> baseResult=new BaseResult<>();
             upLost.setLostId(id);
             Integer accountId=Integer.parseInt(request.getSession().getAttribute("accountId").toString());

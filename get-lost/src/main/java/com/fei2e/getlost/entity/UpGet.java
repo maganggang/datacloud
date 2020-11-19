@@ -114,6 +114,56 @@ public class UpGet {
     private List<GoodsTag> goodsTags;
     @Transient
     private List<FileBase> fileBases;
+    @Transient
+    private List<Dictionary> colors;
+    @Transient
+    private List<String> colorCodes;
+    @Transient
+    private List<Integer> tagIds;
+    @Transient
+    private List<Integer> fileIds;
+    @Transient
+    private List<GoodsExtra> goodsExtraList;
+
+    public List<GoodsExtra> getGoodsExtraList() {
+        return goodsExtraList;
+    }
+
+    public void setGoodsExtraList(List<GoodsExtra> goodsExtraList) {
+        this.goodsExtraList = goodsExtraList;
+    }
+
+    public List<Dictionary> getColors() {
+        return colors;
+    }
+
+    public void setColors(List<Dictionary> colors) {
+        this.colors = colors;
+    }
+
+    public List<String> getColorCodes() {
+        return colorCodes;
+    }
+
+    public void setColorCodes(List<String> colorCodes) {
+        this.colorCodes = colorCodes;
+    }
+
+    public List<Integer> getTagIds() {
+        return tagIds;
+    }
+
+    public void setTagIds(List<Integer> tagIds) {
+        this.tagIds = tagIds;
+    }
+
+    public List<Integer> getFileIds() {
+        return fileIds;
+    }
+
+    public void setFileIds(List<Integer> fileIds) {
+        this.fileIds = fileIds;
+    }
 
     public String getAddress() {
         return address;

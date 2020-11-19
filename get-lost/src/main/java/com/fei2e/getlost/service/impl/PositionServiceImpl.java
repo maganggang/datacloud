@@ -30,7 +30,7 @@ public class PositionServiceImpl extends BaseServiceImpl<Position> implements Po
         position1.setLng(position.getLng());
         position1.setLat(position.getLat());
         position1=positionMapper.selectOne(position);
-        if (position1.getPositionId()!=null){
+        if (position1!=null&&position1.getPositionId()!=null){
             position=position1;
         }else{
             return positionMapper.insert(position);

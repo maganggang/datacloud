@@ -10,9 +10,32 @@ import java.awt.*;
  * @Version 1.0
  **/
 public class ColorCompare {
-    public static double getColorSemblance(Color color1, Color color2){
-        // 此处Color为javafx.scene.paint.Color，getRed()为红色通道的程度，getRed() * 255为红色通道的值
-        double semblance = (255 - (Math.abs(color1.getRed() - color2.getRed()) * 255 * 0.297 + Math.abs(color1.getGreen() - color2.getGreen()) * 255 * 0.593 + Math.abs(color1.getBlue() - color2.getBlue()) * 255 * 11.0 / 100)) / 255;
-        return semblance;
+
+    public static double getColorDistanceOf(Color color1, Color color2){
+        HSV hsv1=HSV.RGB2HSV(color1.getRed(),color1.getGreen(),color1.getBlue());
+        HSV hsv2=HSV.RGB2HSV(color2.getRed(),color2.getGreen(),color2.getBlue());
+        return HSV.distanceOf(hsv1,hsv2);
+    }
+
+    public static String Color2String(Color color) {
+        String R = Integer.toHexString(color.getRed());
+        R = R.length() < 2 ? ('0' + R) : R;
+        String B = Integer.toHexString(color.getBlue());
+        B = B.length() < 2 ? ('0' + B) : B;
+        String G = Integer.toHexString(color.getGreen());
+        G = G.length() < 2 ? ('0' + G) : G;
+        return '#' + R + B + G;
+    }
+
+    public static Color String2Color(String str) {
+        int i = Integer.parseInt(str.substring(1), 16);
+        return new Color(i);
+    }
+
+    public static void main(String[] args){
+        System.out.println(String2Color("#000000"));
+        System.out.println(String2Color("#fff"));
+        double d=getColorDistanceOf(String2Color("#000000"),String2Color("#101010"));
+        System.out.println(d);
     }
 }

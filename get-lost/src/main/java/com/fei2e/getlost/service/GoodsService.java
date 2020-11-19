@@ -1,8 +1,11 @@
 package com.fei2e.getlost.service;
 
 import com.fei2e.getlost.base.BaseService;
+import com.fei2e.getlost.entity.Dictionary;
 import com.fei2e.getlost.entity.Goods;
-import com.fei2e.getlost.service.impl.UpLostTagRefServiceImpl;
+import com.fei2e.getlost.entity.GoodsExtra;
+
+import java.util.List;
 
 /**
  * @ClassName GoodsService
@@ -15,13 +18,11 @@ public interface GoodsService extends BaseService<Goods> {
 
     int deleteByLostId(Integer lostId);
 
-    /**
-     * @ClassName UpLostTagRefService
-     * @DescripTion TODO
-     * @Author dell
-     * @Date 2020/10/15 11:41
-     * @Version 1.0
-     **/
-    class UpLostTagRefService  extends UpLostTagRefServiceImpl {
-    }
+    int insertColors(List<String> colorCodes, Integer goodsId);
+
+    int deleteByGetId(Integer id);
+
+    List<GoodsExtra> selectGoodsExtra(Integer goodsId);
+
+    List<Dictionary> selectGoodsColor(Integer goodsId);
 }

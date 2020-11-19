@@ -35,13 +35,9 @@ public class AccountController {
     private StringRedisTemplate redisTemplate;
     //账号注册通过手机号进行注册，注册后密码加密，手机号或者邮箱进行更换密码
     @ApiOperation(value = "登录", notes="登录")
-    @ApiImplicitParams({
-            @ApiImplicitParam(dataType ="String", paramType = "query", name = "userName", value = "用户名", required = true),
-            @ApiImplicitParam(dataType ="String", paramType = "query", name = "password", value = "密码", required = true),
-    })
     @GetMapping("login")
-    public Account login(@RequestParam("userName") String userName,
-                         @RequestParam("password") String password, HttpServletResponse response){
+    public Account login(@RequestParam("userName") @ApiParam(value = "用户名",required = true) String userName,
+                         @RequestParam("password") @ApiParam(value = "密码",required = true)String password, HttpServletResponse response){
         //登录成功后清除所有该账号的session -1
         Account account=accountService.login(userName,password);
         account.setPassword(null);
@@ -56,9 +52,8 @@ public class AccountController {
         return account;
     }
     @ApiOperation(value = "注册", notes="申请账号")
-    @ApiImplicitParam(name = "telephone", value = "电话号码", paramType = "body", required = true, dataType = "Account")
     @PostMapping("register")
-    public BaseResult<Account> register(HttpServletRequest request, @RequestBody Account account){
+    public BaseResult<Account> register(HttpServletRequest request,@ApiParam("账号信息") @RequestBody Account account){
         //注册成功后清除所有该账号的session -1
         return accountService.register(account);
     }

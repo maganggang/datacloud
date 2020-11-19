@@ -4,10 +4,7 @@ import com.fei2e.demo.entity.FileBase;
 import com.fei2e.getlost.entity.*;
 import com.fei2e.getlost.feign.FileFeignServer;
 import com.fei2e.getlost.service.*;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,7 +20,7 @@ import java.util.List;
  * @Date 2020/10/19 13:31
  * @Version 1.0
  **/
-@Api(description = "上报丢失接口")
+@Api(description = "上报拾取接口")
 @RestController
 @RequestMapping("upGet")
 public class UpGetController {
@@ -43,10 +40,11 @@ public class UpGetController {
     private FileFeignServer fileFeignServer;
     @Autowired
     private MatchRecordService matchRecordService;
+    @Autowired
+    private GoodsExtraService goodsExtraService;
     @ApiOperation(value = "新增", notes="上报拾到物品信息")
-    @ApiImplicitParam(name = "upGet", value = "丢失信息", paramType = "body", required = true, dataType = "UpGet")
     @PostMapping("/add")
-    public BaseResult<UpGet> add(@RequestBody UpGet upGet){
+    public BaseResult<UpGet> add(@ApiParam(value = "拾取物品信息",name = "upGet")@RequestBody UpGet upGet){
         BaseResult<UpGet> baseResult=new BaseResult<>();
         if(request.getSession().getAttribute("userId")!=null){
             Integer userId=Integer.parseInt(request.getSession().getAttribute("userId").toString());
@@ -58,6 +56,14 @@ public class UpGetController {
             if(upGet.getGoods()!=null){
                 goodsService.insertSelective(upGet.getGoods());
                 upGet.setGoodsId(upGet.getGoods().getGoodsId());
+                //物品的颜色进行插入
+                if(upGet.getColorCodes()!=null&&upGet.getColorCodes().size()>0){
+                    goodsService.insertColors(upGet.getColorCodes(), upGet.getGoodsId());
+                }
+                //附加参数的插入
+                if(upGet.getGoodsExtraList()!=null&&upGet.getGoodsExtraList().size()>0){
+                    goodsExtraService.insertListByGoodsId(upGet.getGoodsExtraList(),upGet.getGoodsId());
+                }
             }
             //插入位置
             if(upGet.getPosition()!=null){
@@ -90,14 +96,16 @@ public class UpGetController {
         return baseResult;
     }
     @ApiOperation(value = "修改", notes="修改上报拾取物品信息")
-    @ApiImplicitParam(name = "upGet", value = "拾取物品", paramType = "body", required = true, dataType = "UpGet")
     @PutMapping("/update/{id}")
-    public BaseResult<UpGet> add(@PathVariable Integer id, @RequestBody UpGet upGet){
+    public BaseResult<UpGet> add(@PathVariable Integer id,@ApiParam(value = "拾取物品信息") @RequestBody UpGet upGet){
         BaseResult<UpGet> baseResult=new BaseResult<>();
         upGet.setGetId(id);
         Integer accountId=Integer.parseInt(request.getSession().getAttribute("accountId").toString());
         upGet.setOperatorId(accountId);
         upGet.setOperateTime(new Date());
+        if(upGet.getGetTime()==null){
+            upGet.setGetTime(new Date());
+        }
         //修改物品
         if(upGet.getGoods()!=null&&upGet.getGoods().getGoodsId()!=null){
             goodsService.updateByPrimaryKey(upGet.getGoods());
@@ -129,10 +137,11 @@ public class UpGetController {
         return  upGetService.selectPage(page);
     }
     //删除我的丢失
-    @ApiOperation(value = "删除", notes="删除我的丢失上报")
+    @ApiOperation(value = "删除", notes="删除我的上传上报")
     @DeleteMapping("/delete/{id}")
     public BaseResult<Boolean> delete(@PathVariable Integer id){
         BaseResult<Boolean> result=new BaseResult<>();
+        UpGet upGet=upGetService.selectByPrimaryKey(id);
         //删除附件关联
         List<Integer> fileIds=getFileService.selectFileByGetId(id);
         getFileService.deleteFileByGetId(id);
@@ -140,7 +149,7 @@ public class UpGetController {
         //删除tag关联
         upGetTagRefService.deleteByGetId(id);
         //删除物品关联
-        goodsService.deleteByLostId(id);
+        goodsService.deleteByGetId(id);
         //删除匹配记录
         matchRecordService.deleteByGetId(id);
         int i=upGetService.deleteByPrimaryKey(id);
@@ -161,6 +170,10 @@ public class UpGetController {
         upGet.setGoods(goods);
         Position position=positionService.selectByPrimaryKey(upGet.getPositionId());
         upGet.setPosition(position);
+        List<GoodsExtra> goodsExtras=goodsService.selectGoodsExtra(upGet.getGoodsId());
+        List<Dictionary> colors=goodsService.selectGoodsColor(upGet.getGoodsId());
+        upGet.setGoodsExtraList(goodsExtras);
+        upGet.setColors(colors);
         List<GoodsTag> tagRefs=upGetTagRefService.selectByGetId(id);
         upGet.setGoodsTags(tagRefs);
         result.setData(upGet);

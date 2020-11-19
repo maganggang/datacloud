@@ -10,9 +10,18 @@
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="region_code" jdbcType="VARCHAR" property="regionCode" />
     <result column="region_name" jdbcType="VARCHAR" property="regionName" />
-    <result column="region_name_en" jdbcType="VARCHAR" property="regionNameEn" />
-    <result column="region_shortname_en" jdbcType="VARCHAR" property="regionShortnameEn" />
     <result column="fid" jdbcType="INTEGER" property="fid" />
     <result column="level" jdbcType="TINYINT" property="level" />
   </resultMap>
+  <sql id="baseSql">
+    id,region_code,region_name,fid,level
+  </sql>
+  <select id="selectByCodes" resultMap="BaseResultMap" >
+    select
+    <include refid="baseSql"/>
+    from dictionary where region_code in
+    <foreach collection="colorList" separator="," open="(" item="item" close=")">
+      #{item}
+    </foreach>
+  </select>
 </mapper>

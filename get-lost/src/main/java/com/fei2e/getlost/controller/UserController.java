@@ -6,6 +6,7 @@ import com.fei2e.getlost.entity.User;
 import com.fei2e.getlost.service.AccountService;
 import com.fei2e.getlost.service.UserService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,7 +30,7 @@ public class UserController {
     @Autowired
     private UserService userService;
     @PostMapping("register")
-    public BaseResult<User> registe(HttpServletRequest request, @RequestBody User user){
+    public BaseResult<User> registe(HttpServletRequest request, @ApiParam("用户信息")@RequestBody User user){
 
         return userService.register(request,user);
     }
