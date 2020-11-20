@@ -19,4 +19,8 @@ public interface IWeixinPayService {
     String weixinPay1(Product product);
 
     void payBack(HttpServletRequest request, HttpServletResponse response) throws Exception;
+
+    Map<String, String> weixinPay2(Product product);
+
+    void wxNotify(HttpServletRequest request, HttpServletResponse response)throws Exception;
 }

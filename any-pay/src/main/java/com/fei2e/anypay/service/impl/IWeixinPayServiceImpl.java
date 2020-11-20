@@ -3,11 +3,10 @@ package com.fei2e.anypay.service.impl;
 import com.fei2e.anypay.config.WeiXinConfig;
 import com.fei2e.anypay.entity.Product;
 import com.fei2e.anypay.service.IWeixinPayService;
-import com.fei2e.anypay.util.ConfigUtil;
-import com.fei2e.anypay.util.HttpUtil;
-import com.fei2e.anypay.util.PayCommonUtil;
-import com.fei2e.anypay.util.XMLUtil;
+import com.fei2e.anypay.util.*;
 import com.github.wxpay.sdk.WXPayConstants;
+import com.github.wxpay.sdk.WXPayUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.jdom.JDOMException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -60,32 +59,12 @@ public class IWeixinPayServiceImpl implements IWeixinPayService {
  **/
     @Override
     public void payBack(HttpServletRequest request, HttpServletResponse response) throws Exception{
-        //读取参数
-        InputStream inputStream = request.getInputStream();
-        StringBuffer sb = new StringBuffer();
-        String s;
-        BufferedReader in = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
-        while ((s = in.readLine()) != null) {
-            sb.append(s);
-        }
-        in.close();
-        inputStream.close();
-
+        String requestStr=HttpUtil.initRequest(request);
         //解析xml成map
-        Map<String, String> map = XMLUtil.doXMLParse(sb.toString());
+        Map<String, String> map = XMLUtil.doXMLParse(requestStr);
+        Map<String,String> result=WXPayUtil.xmlToMap(requestStr);
         //过滤空 设置 TreeMap
-        SortedMap<Object, Object> packageParams = new TreeMap<>();
-        Iterator it = map.keySet().iterator();
-        while (it.hasNext()) {
-            String parameter = (String) it.next();
-            String parameterValue = map.get(parameter);
-
-            String v = "";
-            if (null != parameterValue) {
-                v = parameterValue.trim();
-            }
-            packageParams.put(parameter, v);
-        }
+        SortedMap<Object, Object> packageParams=ConfigUtil.MapToMap(result);
         //判断签名是否正确
         if (PayCommonUtil.isTenpaySign("UTF-8", packageParams, weiXinConfig.getApiKey())) {
             //统一下单
@@ -103,7 +82,6 @@ public class IWeixinPayServiceImpl implements IWeixinPayService {
             params.put("sign", paramsSign);// 签名
             String requestXML = PayCommonUtil.getRequestXml(params);
             // 微信支付统一接口(POST)
-           // public final static String UNIFIED_ORDER_URL = "https://api.mch.weixin.qq.com/pay/unifiedorder";
             String resXml = HttpUtil.postData(WXPayConstants.UNIFIEDORDER_URL, requestXML);
             Map<String, String>  payResult = XMLUtil.doXMLParse(resXml);
             String returnCode =  payResult.get("return_code");
@@ -132,5 +110,73 @@ public class IWeixinPayServiceImpl implements IWeixinPayService {
             }
         }else{
         }
+    }
+/**
+ * @Author mgg
+ * @Description  模式二支付
+ * @Date 16:28 2020/11/20
+ * @Param
+ * @return
+ **/
+    @Override
+    public Map<String, String> weixinPay2(Product product) {
+        System.out.println("订单号：{}生成微信支付码"+product.getOutTradeNo());
+            // 账号信息
+            String trade_type = "NATIVE";// 交易类型 原生扫码支付
+            SortedMap<Object, Object> packageParams=ConfigUtil.commonParams(weiXinConfig);
+            packageParams.put("product_id", product.getProductId());// 商品ID
+            packageParams.put("body", product.getBody());// 商品描述
+            packageParams.put("out_trade_no", product.getOutTradeNo());// 商户订单号
+            String totalFee = product.getTotalFee();
+            totalFee =  CommonUtils.subZeroAndDot(totalFee);
+            packageParams.put("total_fee", totalFee);// 总金额
+            packageParams.put("spbill_create_ip", product.getSpbillCreateIp());// 发起人IP地址
+            packageParams.put("notify_url", weiXinConfig.getNotifyUrl());// 回调地址
+            packageParams.put("trade_type", trade_type);// 交易类型
+            String sign = PayCommonUtil.createSign("UTF-8", packageParams, weiXinConfig.getApiKey());
+            packageParams.put("sign", sign);// 签名
+
+            String requestXML = PayCommonUtil.getRequestXml(packageParams);
+            String resXml = HttpUtil.postData(WXPayConstants.UNIFIEDORDER_URL, requestXML);
+            Map<String, String> map = null;
+            try {
+                map = WXPayUtil.xmlToMap(resXml);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+         return map;
+    }
+
+    @Override
+    public void wxNotify(HttpServletRequest request, HttpServletResponse response)throws Exception{
+        String requestStr=HttpUtil.initRequest(request);
+        if(requestStr!=null&& StringUtils.isNotEmpty(requestStr)){
+            Map<String,String> result=WXPayUtil.xmlToMap(requestStr);
+            //过滤空 设置 TreeMap
+            SortedMap<Object, Object> packageParams=ConfigUtil.MapToMap(result);
+            // 判断签名是否正确
+            if (PayCommonUtil.isTenpaySign("UTF-8", packageParams, weiXinConfig.getApiKey())) {
+                // ------------------------------
+                // 处理业务开始
+                // ------------------------------
+                String resXml = "";
+                if ("SUCCESS".equals((String) packageParams.get("result_code"))) {
+                    // 这里是支付成功
+                    //这里 根据实际业务场景 做相应的操作
+                    // 通知微信.异步确认成功.必写.不然会一直通知后台.八次之后就认为交易失败了.
+                    resXml = "<xml>" + "<return_code><![CDATA[SUCCESS]]></return_code>" + "<return_msg><![CDATA[OK]]></return_msg>" + "</xml> ";
+                } else {
+                    resXml = "<xml>" + "<return_code><![CDATA[FAIL]]></return_code>" + "<return_msg><![CDATA[报文为空]]></return_msg>" + "</xml> ";
+                }
+                // ------------------------------
+                // 处理业务完毕
+                // ------------------------------
+                BufferedOutputStream out = new BufferedOutputStream(response.getOutputStream());
+                out.write(resXml.getBytes());
+                out.flush();
+                out.close();
+            }
+        }
+
     }
 }

@@ -1,7 +1,10 @@
 package com.fei2e.anypay.util;
 
 import com.fei2e.anypay.config.WeiXinConfig;
+import com.github.wxpay.sdk.WXPayUtil;
 
+import java.util.Iterator;
+import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
@@ -33,5 +36,19 @@ public class ConfigUtil {
         sortedMap.put("nonce_str", nonce_str);// 随机字符串
         return sortedMap;
     }
-
+ public static SortedMap<Object, Object> MapToMap(Map<String,String> map) {
+     //过滤空 设置 TreeMap
+     SortedMap<Object, Object> packageParams = new TreeMap<>();
+     Iterator it = map.keySet().iterator();
+     while (it.hasNext()) {
+         String parameter = (String) it.next();
+         String parameterValue = map.get(parameter);
+         String v = "";
+         if (null != parameterValue) {
+             v = parameterValue.trim();
+         }
+         packageParams.put(parameter, v);
+     }
+     return packageParams;
+ }
 }

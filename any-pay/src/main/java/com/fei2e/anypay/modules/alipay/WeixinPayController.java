@@ -70,4 +70,29 @@ public class WeixinPayController {
     public void payBack(HttpServletRequest request, HttpServletResponse response) throws Exception {
          weixinPayService.payBack(request,response);
     }
+    @ApiOperation(value="二维码支付(模式二)下单并生成二维码")
+    @RequestMapping(value="qcPay2",method=RequestMethod.POST)
+    @ResponseBody
+    public Map<String, String>  qcPay2(@RequestBody Product product) {
+        //参数自定义  这只是个Demo
+        product.setSpbillCreateIp("192.168.0.180");
+        Map<String, String> message  =  weixinPayService.weixinPay2(product);
+        return message;
+    }
+    /**
+     * 支付后台回调 支付模式二
+     * @Author  科帮网
+     * @param request
+     * @param response
+     * @throws Exception  void
+     * @Date	2017年7月31日
+     * 更新日志
+     * 2017年7月31日  科帮网 首次创建
+     *
+     */
+    @ApiOperation(value="支付后台回调")
+    @RequestMapping(value="pay",method=RequestMethod.POST)
+    public void wxNotify(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        weixinPayService.wxNotify(request,response);
+    }
 }

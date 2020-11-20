@@ -33,7 +33,6 @@ public class XMLUtil {
 	 * @throws JDOMException
 	 * @throws IOException
 	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static Map doXMLParse(String strxml) throws JDOMException, IOException {
 		//过滤关键词，防止XXE漏洞攻击
 	    strxml = filterXXE(strxml);
