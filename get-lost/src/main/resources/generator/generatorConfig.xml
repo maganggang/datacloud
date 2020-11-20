@@ -46,7 +46,7 @@
        <!-- <table tableName="account" domainObjectName="Account">
         </table>-->
 
-        <table tableName="goods_tag" domainObjectName="GoodsTag">
+        <table tableName="goods_color_ref" domainObjectName="GoodsColorRef">
         </table>
         <!--<table tableName="get_tag_ref" domainObjectName="GetTagRef">
         </table>

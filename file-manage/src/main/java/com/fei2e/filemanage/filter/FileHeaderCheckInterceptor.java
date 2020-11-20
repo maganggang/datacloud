@@ -36,7 +36,11 @@ public class FileHeaderCheckInterceptor implements HandlerInterceptor {
                 InputStream in = multipartFile.getInputStream();
                 //根据文件头获取文件类型
                 String type = FileType.getFileType(in);
+                if(multipartFile.getOriginalFilename().endsWith(".txt")){
+                    return true;
+                }
                 if (type==null) {
+                    //改为有识别与源文件名不符合的不允许
 //                		throw new BaseRunException("上传文件有异常，已被系统禁止！") ;
                     System.out.println("----------上传文件有异常，已被系统禁止！头部信息：" + content);
                     response.setCharacterEncoding("UTF-8");
