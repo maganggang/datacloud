@@ -1,0 +1,44 @@
+server:
+  port: 8582
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:1011/eureka/
+spring:
+  application:
+    name: get-lost
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/payment?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+    username: root
+    password: password
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    #sql 语句打印
+    show-sql: true
+    #配置方言
+    database-platform: org.hibernate.dialect.MySQL5Dialect
+mybatis:
+  mapper-locations: classpath:mapper/*Mapper.xml
+  type-aliases-package: com.fei2e.anypay.entity
+weixin:
+  #服务号的应用ID 欢迎关注https://blog.52itstyle.com/
+  appId: wx65872cd0c1ca34fd
+  #服务号的应用密钥
+  appSecret: HANYUANzhihui0123456789987654321
+  #商户号
+  mchId: 1421115002
+  #API密钥
+  apiKey: HANYUANzhihui0123456789987654321
+  #签名加密方式
+  signType: MD5
+  #/微信支付证书名称
+  cretPath: apiclient_cert.p12
+  notify_url: http://hyzhsafe.com/api/payment/noToken/notify
+alipay:
+  appId: 2019061165485873
+  privateKey: MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDGmEDD9N1CU38/6VRPniNAU7pTj3tXYBJERuYA5fMgC/khtexzJ5HYOXbwBH5ZLbh3r02jZ4TAxRJi47tAX3uTQgQ4WENf1AHyoO/NHIk+z8KmS4WkE5Y/t5TftT4jDRmQ79/BWqopHSVnwhWb3gZK5Is59rzZq0OTmRsozP/KVaRvfT/zECpYcSb5crWZnz8jqM/oktwouCNO6Z7bbjHg3x4XSM0ijxNds2zbFwq0vDOXDHL5FoBL6mKzMde0Ppba9yZk2jgh0nM93vv7+vjwMZTUxHmDesmB0MbYasBRvZ2s12FOp4HCmq1L+AiYvZuxwHfz7mp5u0i7IF/obGtVAgMBAAECggEBAJv6HvwJSPJ8A/ideROjX4p5eGGC0tv4X8ByctmHwaGM5dodOZ3kGT9bOtgen2HJcBXIgNDzUCfbYKp8tKhFlhg9hHUAlcIhEHqQ/mb5n63OndHghREuNRbMSEg/4JLFCix0yifh3r2135gTrsch5Y1S3SrkaMUJJ2U4nkU4ZTpzD7ni3uncDUGNfg0wDcYspGCI5PILZOde++Rmt3Jkj9/6dyY+ASMUFv5Sovl9MW1amP5oKRvkD6XN7psLwp/5kxcutJeP337QC3aeJ/5aR+44OMqdJGFLXVVybSVceH67s7m1q9p/GtvWNBtUHy6YAB1m5b89sFA2wY/Nr89EKuECgYEA9q6UJ6sb7wLeMbmNOxRDzAi96i4Yk0HSYT35bOl6KxfZUzl9GK79H4cA0BdRl2RfZl8VAFcISbxjrw03eviEnFI1YNN7WVIN41NIl9FbgZ64ElxnfKZb956xbU2KaPPKNLqLpxupZqMLCeleTtI2ZPt4Y18H8u2ksLSd3AP7jA0CgYEAzhira3GpbNFBfo3YYjRWTy0DxHI56cuUJuG2R5gaLoVKxN6s3g8mQaG97jb9uIg4NHzrDSJLv1EviNOoV1py/KJchdJIOxTIOevsGKL9X7tFEHGoyJw1MUO7yF9imPOG/FvAZHhwAcD8LL6+N/L8N2BhKTIvN1/32VHJhgVvYmkCgYEAhNQCcM3BL9TyggHw22QREZePc764euqRds0hNpUNtJCV9CtbgeQP5l8Sf/pec8+XUw9VxqYWj2XCo2rRegTBm07k8StPGwyE7+hTiXQw+r3VTgW1r7gAg3hO/5UmN1c2hWgBdMz/TYXzlrWzk2u74GpMK+3q4NM3v/Kxodv/Ii0CgYB8trz0laE6sh354Qfx1U3tN4YyGBUnfwO1y5wsEsS1Jf+qxjzBW1WBHcj7H9fFFNk+GeF63ygLK6uiFsKlqZwveGiYqjj/V4IaWsNR3T+J8J7IZp8GVlBx8VTu2ZmmiKdEipkPsznENe3jfcFJxgYN1Iq3DSE5Vx96KF3UdfGDEQKBgFDH/Roabh9M2b9fSqn+E5vbFPg2uftJQ7FBVwj5IcL2NUVIpu5Gnqk8HrPmrFJh1ephhixauv6P/VZdCVXR9L26/BOPoRpD5x70FDL0VsJD0PfvlNbPBjIEOrVXccWMhu9K336c0Gc5GJePx22tWPSfpY4khkYNaqM1Akt2i9N6
+  publicKey: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArHyGoV7KSgP2tTzWhWcqXhd0RIgUKMeLWLKR+2BTtz/HYTbWlUebFc/qHL1wY+lk/wIkcDcL82LML8SBqV8G6YkjKO/VPRLXbc8BbXqduCsQr6d6npYe3GXwGL3tOx1vXDE2DeWnCr4WGYbfTzAZ2HOc4Omb2ktPHDBEjODh/ePLO/RbY0VW2M7fFYzQaJrOhuejLP78LAl4MYNTjo9mwNejkM2jF8rnmHOJ9u2Z4i60RJcooKj96Zj4Kyu/m32cvtkObGUfpomxwz2iuTHhoNAgdAp4/WrQ5YWD8F9FEe84NAWG+ThJb+NaWypkepLwsC6WUCxEIQ7HjP7R15HJ6wIDAQAB
+  serverUrl: https://openapi.alipaydev.com/gateway.do
+  domain: https://service-7sst45k7-1259337860.sh.apigw.tencentcs.com
