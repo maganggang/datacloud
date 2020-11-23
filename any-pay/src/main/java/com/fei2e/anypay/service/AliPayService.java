@@ -2,6 +2,10 @@ package com.fei2e.anypay.service;
 
 import com.fei2e.anypay.entity.Product;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
 /**
  * @ClassName AliPayService
  * @DescripTion TODO
@@ -37,4 +41,10 @@ public interface AliPayService {
     String aliPayMobile(Product product);
 
     String aliPay(Product product);
+
+    String appPay(Product product);
+
+    void payBack(HttpServletRequest request, HttpServletResponse response) throws IOException;
+
+    String payFront(HttpServletRequest request);
 }
