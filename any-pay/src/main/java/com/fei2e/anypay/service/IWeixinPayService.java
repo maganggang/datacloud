@@ -23,4 +23,6 @@ public interface IWeixinPayService {
     Map<String, String> weixinPay2(Product product);
 
     void wxNotify(HttpServletRequest request, HttpServletResponse response)throws Exception;
+
+    Map<String, String> mobilePay(HttpServletRequest request)throws Exception;
 }

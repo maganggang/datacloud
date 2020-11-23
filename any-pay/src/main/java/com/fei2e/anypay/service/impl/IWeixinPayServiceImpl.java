@@ -30,6 +30,14 @@ import java.util.TreeMap;
 public class IWeixinPayServiceImpl implements IWeixinPayService {
     @Autowired
     private WeiXinConfig weiXinConfig;
+    private String doSignPost(SortedMap<Object, Object> params){
+        String paramsSign = PayCommonUtil.createSign("UTF-8", params,  weiXinConfig.getApiKey());
+        params.put("sign", paramsSign);// 签名
+        String requestXML = PayCommonUtil.getRequestXml(params);
+        // 微信支付统一接口(POST)
+        String resXml = HttpUtil.postData(WXPayConstants.UNIFIEDORDER_URL, requestXML);
+        return resXml;
+    }
     @Override
     public String weixinPay1(Product product) {
         //商户支付回调URL设置指引：进入公众平台-->微信支付-->开发配置-->扫码支付-->修改 加入回调URL
@@ -77,12 +85,7 @@ public class IWeixinPayServiceImpl implements IWeixinPayService {
             params.put("spbill_create_ip", "192.168.0.169");// 发起人IP地址
             params.put("notify_url", weiXinConfig.getNotifyUrl());// 回调地址
             params.put("trade_type", "NATIVE");// 交易类型
-
-            String paramsSign = PayCommonUtil.createSign("UTF-8", params,  weiXinConfig.getApiKey());
-            params.put("sign", paramsSign);// 签名
-            String requestXML = PayCommonUtil.getRequestXml(params);
-            // 微信支付统一接口(POST)
-            String resXml = HttpUtil.postData(WXPayConstants.UNIFIEDORDER_URL, requestXML);
+            String resXml = doSignPost(params);
             Map<String, String>  payResult = XMLUtil.doXMLParse(resXml);
             String returnCode =  payResult.get("return_code");
             if("SUCCESS".equals(returnCode)){
@@ -133,11 +136,7 @@ public class IWeixinPayServiceImpl implements IWeixinPayService {
             packageParams.put("spbill_create_ip", product.getSpbillCreateIp());// 发起人IP地址
             packageParams.put("notify_url", weiXinConfig.getNotifyUrl());// 回调地址
             packageParams.put("trade_type", trade_type);// 交易类型
-            String sign = PayCommonUtil.createSign("UTF-8", packageParams, weiXinConfig.getApiKey());
-            packageParams.put("sign", sign);// 签名
-
-            String requestXML = PayCommonUtil.getRequestXml(packageParams);
-            String resXml = HttpUtil.postData(WXPayConstants.UNIFIEDORDER_URL, requestXML);
+        String resXml = doSignPost(packageParams);
             Map<String, String> map = null;
             try {
                 map = WXPayUtil.xmlToMap(resXml);
@@ -178,5 +177,28 @@ public class IWeixinPayServiceImpl implements IWeixinPayService {
             }
         }
 
+    }
+
+    @Override
+    public Map<String, String> mobilePay(HttpServletRequest request) throws Exception{
+        String orderNo = request.getParameter("outTradeNo");
+        String totalFee = request.getParameter("totalFee");
+        //获取code 这个在微信支付调用时会自动加上这个参数 无须设置
+        String code = request.getParameter("code");
+        //获取用户openID(JSAPI支付必须传openid)
+        String openId = MobileUtil.getOpenId(code,weiXinConfig.getAppId(),weiXinConfig.getApiKey());
+        String notify_url =weiXinConfig.getNotifyUrl()+"/weixinMobile/WXPayBack";//回调接口
+        String trade_type = "JSAPI";// 交易类型H5支付 也可以是小程序支付参数
+        SortedMap<Object, Object> packageParams = ConfigUtil.commonParams(weiXinConfig);
+        packageParams.put("body","报告");// 商品描述
+        packageParams.put("out_trade_no", orderNo);// 商户订单号
+        packageParams.put("total_fee", totalFee);// 总金额
+        packageParams.put("spbill_create_ip", AddressUtils.getIpAddr(request));// 发起人IP地址
+        packageParams.put("notify_url", notify_url);// 回调地址
+        packageParams.put("trade_type", trade_type);// 交易类型
+        packageParams.put("openid", openId);//用户openID
+        String resXml = doSignPost(packageParams);
+        Map map = WXPayUtil.xmlToMap(resXml);
+        return map;
     }
 }

@@ -1,4 +1,4 @@
-package com.fei2e.anypay.modules.alipay;
+package com.fei2e.anypay.modules.weixinpay;
 
 import com.fei2e.anypay.entity.Product;
 import com.fei2e.anypay.service.IWeixinPayService;
@@ -94,5 +94,15 @@ public class WeixinPayController {
     @RequestMapping(value="pay",method=RequestMethod.POST)
     public void wxNotify(HttpServletRequest request, HttpServletResponse response) throws Exception {
         weixinPayService.wxNotify(request,response);
+    }
+
+    /**
+     * 手机支付
+     * @return
+     */
+    @ApiOperation(value="支付后台回调")
+    @RequestMapping(value="mobilePay",method=RequestMethod.POST)
+    public Map<String, String> mobilePay(HttpServletRequest request) throws Exception{
+        return  weixinPayService.mobilePay(request);
     }
 }

@@ -15,25 +15,28 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-    #sql Óï¾ä´òÓ¡
+    #sql ï¿½ï¿½ï¿½ï¿½Ó¡
     show-sql: true
-    #ÅäÖÃ·½ÑÔ
+    #ï¿½ï¿½ï¿½Ã·ï¿½ï¿½ï¿½
     database-platform: org.hibernate.dialect.MySQL5Dialect
+  thymeleaf:
+    cache: false
+    suffix: .html
 mybatis:
   mapper-locations: classpath:mapper/*Mapper.xml
   type-aliases-package: com.fei2e.anypay.entity
 weixin:
-  #·þÎñºÅµÄÓ¦ÓÃID »¶Ó­¹Ø×¢https://blog.52itstyle.com/
+  #ï¿½ï¿½ï¿½ï¿½Åµï¿½Ó¦ï¿½ï¿½ID ï¿½ï¿½Ó­ï¿½ï¿½×¢https://blog.52itstyle.com/
   appId: wx65872cd0c1ca34fd
-  #·þÎñºÅµÄÓ¦ÓÃÃÜÔ¿
+  #ï¿½ï¿½ï¿½ï¿½Åµï¿½Ó¦ï¿½ï¿½ï¿½ï¿½Ô¿
   appSecret: HANYUANzhihui0123456789987654321
-  #ÉÌ»§ºÅ
+  #ï¿½Ì»ï¿½ï¿½ï¿½
   mchId: 1421115002
-  #APIÃÜÔ¿
+  #APIï¿½ï¿½Ô¿
   apiKey: HANYUANzhihui0123456789987654321
-  #Ç©Ãû¼ÓÃÜ·½Ê½
+  #Ç©ï¿½ï¿½ï¿½ï¿½ï¿½Ü·ï¿½Ê½
   signType: MD5
-  #/Î¢ÐÅÖ§¸¶Ö¤ÊéÃû³Æ
+  #/Î¢ï¿½ï¿½Ö§ï¿½ï¿½Ö¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
   cretPath: apiclient_cert.p12
   notify_url: http://hyzhsafe.com/api/payment/noToken/notify
 alipay:
@@ -42,3 +45,4 @@ alipay:
   publicKey: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArHyGoV7KSgP2tTzWhWcqXhd0RIgUKMeLWLKR+2BTtz/HYTbWlUebFc/qHL1wY+lk/wIkcDcL82LML8SBqV8G6YkjKO/VPRLXbc8BbXqduCsQr6d6npYe3GXwGL3tOx1vXDE2DeWnCr4WGYbfTzAZ2HOc4Omb2ktPHDBEjODh/ePLO/RbY0VW2M7fFYzQaJrOhuejLP78LAl4MYNTjo9mwNejkM2jF8rnmHOJ9u2Z4i60RJcooKj96Zj4Kyu/m32cvtkObGUfpomxwz2iuTHhoNAgdAp4/WrQ5YWD8F9FEe84NAWG+ThJb+NaWypkepLwsC6WUCxEIQ7HjP7R15HJ6wIDAQAB
   serverUrl: https://openapi.alipaydev.com/gateway.do
   domain: https://service-7sst45k7-1259337860.sh.apigw.tencentcs.com
+  notify_url: http://hyzhsafe.com/api/payment/noToken/notify

@@ -1,5 +1,8 @@
 package com.fei2e.anypay.config;
 
+import com.alipay.demo.trade.config.Configs;
+import com.alipay.demo.trade.service.AlipayTradeService;
+import com.alipay.demo.trade.service.impl.AlipayTradeServiceImpl;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,4 +26,6 @@ public class AliPayConfig {
     private String privateKey;
     private String serverUrl;
     private String domain;
+    @Value("${alipay.notify_url}")
+    private String notifyUrl;
 }
