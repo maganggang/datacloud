@@ -1,0 +1,16 @@
+server:
+  port: 9801
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:1011/eureka/
+  instance:
+    lease-renewal-interval-in-seconds: 2
+    lease-expiration-duration-in-seconds: 4
+spring:
+  application:
+    name: netty-server
+ws:
+  ssl: false
+  port: 8922
+  host: localhost
